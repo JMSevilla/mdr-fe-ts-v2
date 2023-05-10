@@ -30,4 +30,7 @@ export class AuthenticationApi {
     public authenticationJwtMockGetter(){
         return this.axios.get('/api/authentication/auth-jwt-mock-getter')
     }
+    public authenticationGoogleLogin(email: string | undefined) {
+        return this.axios.post(`/api/customer/customer-google-login/${email}`)
+    }
 }

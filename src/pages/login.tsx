@@ -97,6 +97,7 @@ const Login: React.FC = () => {
     const result = await api.authentication.userAuthLogin(args);
     return result;
   });
+
   const createtoken = useApiCallBack(async (api, args: CreateTokenArgs) => {
     const result = await api.authentication.createToken(args);
     return result;
@@ -117,6 +118,7 @@ const Login: React.FC = () => {
   const IdentifyUsertype = useApiCallBack((api, uuid: any) =>
     api.mdr.IdentifyUserTypeFunc(uuid)
   );
+  const googleLoginTms = useApiCallBack((api, email: string) => api.authentication.authenticationGoogleLogin(email))
   const fetchCreatedAuthHistory = useApiCallBack(
     async (api, userId: number | any) =>
       await api.authentication.fetchCreatedAuthHistory(userId)
@@ -127,8 +129,53 @@ const Login: React.FC = () => {
       return result;
     }
   );
+  useEffect(
+        () => {
+            if(Object.keys(user).length > 0){
+                axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user?.access_token}`, {
+                    headers: {
+                        Authorization : `Bearer ${user.access_token}`,
+                        Accept: 'application/json'
+                    }
+                })
+                .then((res : any) => {
+                    const { data } : any = res
+                    console.log(data)
+                    setProfile(data)
+                })
+            }
+        },
+        [user]
+
+    )
   const loginWithGoogle = useGoogleLogin({
-    onSuccess: (codeResponse: any) => setUser(codeResponse),
+    onSuccess: (codeResponse: any) => {
+      setOpen(!open)
+      useGoogleTms.mutate(codeResponse?.email, {
+        onSuccess: (response : any) => {
+          const { data } : any = response;
+          if(data == 'not_exist') {
+            handleOnToast(
+              "Account not Found : No Account Associated with this email.",
+              "top-right",
+              false,
+              true,
+              true,
+              true,
+              undefined,
+              "dark",
+              "error"
+            );
+            setOpen(false)
+          } else {
+            /**
+             * Blockers : account creation form for client
+             * api response for client login
+             */
+          }
+        }
+      })
+    },
     onError: (error: any) => console.log("Try failed", error),
   });
 
@@ -183,6 +230,7 @@ const Login: React.FC = () => {
   const useAuthSignIn = () => {
     return useMutation((args: LoginProps) => authSignin.execute(args));
   };
+  const useGoogleTms = useMutation((email : string ) => googleLoginTms.execute(email))
   const useCreateToken = useMutation((data: { userId: any; token: string }) =>
     createtoken.execute(data)
   );
@@ -449,9 +497,8 @@ const Login: React.FC = () => {
                 Sign in
               </button>
               <GoogleButton
-                // onClick={() => loginWithGoogle()}
+                onClick={() => loginWithGoogle()}
                 style={{ width: "100%", marginTop: "20px" }}
-                disabled={true}
               />
             </div>
           </div>

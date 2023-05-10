@@ -23,10 +23,10 @@ const HTTP_OPTIONS: HttpOptions = {
 
 
 
-export const httpClient = new Http({ ...HTTP_OPTIONS, baseURL : config.value.PROD_URL })
+export const httpClient = new Http({ ...HTTP_OPTIONS, baseURL : config.value.TENANT_URL })
 export const httpSsrClient = new Http({
     ...HTTP_OPTIONS,
-    baseURL: config.value.PROD_URL
+    baseURL: config.value.TENANT_URL
 })
 export const useApiCallBack = <R, A extends unknown>(asyncFn: (api: Api, args: A) => Promise<R>) =>
     

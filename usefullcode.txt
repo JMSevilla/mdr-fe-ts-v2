@@ -1,22 +1,4 @@
-// useEffect(
-    //     () => {
-    //         if(Object.keys(user).length > 0){
-    //             axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user?.access_token}`, {
-    //                 headers: {
-    //                     Authorization : `Bearer ${user.access_token}`,
-    //                     Accept: 'application/json'
-    //                 }
-    //             })
-    //             .then((res : any) => {
-    //                 const { data } : any = res
-    //                 console.log(data)
-    //                 setProfile(data)
-    //             })
-    //         }
-    //     },
-    //     [user]
 
-    // )
 
     code above is for google auth scan 
 
