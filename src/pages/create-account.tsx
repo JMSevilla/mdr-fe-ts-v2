@@ -122,6 +122,7 @@ const CreateAccount: React.FC = () => {
   const baseAccountInfo = useAtomValue(accountCreationAtom);
   const hasNoMiddleName = watch("hasNoMiddleName");
   const hasNoMiddleNamePrevValue = usePreviousValue(hasNoMiddleName);
+  const passwordWatcher = watch("password");
   const { data, isLoading, error } = useQuery("checkUser", () =>
     UAMCheckEmail.execute(1).then((response) => response.data)
   );
@@ -136,7 +137,13 @@ const CreateAccount: React.FC = () => {
     if (hasNoMiddleNamePrevValue) {
       trigger("middleName");
     }
-  }, [hasNoMiddleName, hasNoMiddleNamePrevValue, resetField, trigger]);
+  }, [
+    hasNoMiddleName,
+    hasNoMiddleNamePrevValue,
+    resetField,
+    trigger,
+    passwordWatcher,
+  ]);
   const result = zxcvbn(getValues().password);
   const useJwtAuthAccountCreation = useMutation(
     (args: AuthenticationJwtCreateAccount) =>

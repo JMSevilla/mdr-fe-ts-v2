@@ -361,12 +361,12 @@ const Login: React.FC = () => {
             </Typography>
             <p className="mt-2 text-center text-sm text-gray-600">
               Or{" "}
-              <a
-                href="#"
+              <Link
+                href="/customer-registration"
                 className="font-medium text-indigo-600 hover:text-indigo-500"
               >
                 start creating your account
-              </a>
+              </Link>
             </p>
           </div>
           <div className="mt-8 space-y-6">

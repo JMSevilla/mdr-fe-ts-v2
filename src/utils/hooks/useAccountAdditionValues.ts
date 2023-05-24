@@ -13,6 +13,7 @@ import { EmailAccountCreation } from "@/components/ForgotPassword/forms/EmailDet
 import { VerificationAccountCreation } from "@/components/ForgotPassword/forms/VerificationDetailsForms";
 import { NewCredentialsAccountCreation } from "@/components/ForgotPassword/forms/NewCredentialsForms";
 import { JoinMeetingFormAccount } from "@/pages/sys-admin/digital-meet";
+import { ClientAccountCreation } from "@/components/client";
 
 type AccountCreationFormData = {
   accountCreation: AccountCreation;
@@ -22,11 +23,15 @@ type AccountLoginFormData = {
   accountLoginFrmData: loginAccount;
 };
 
+type AccountClientCreationFormData = {
+  accountClientCreation: ClientAccountCreation;
+};
+
 export const verificationAtom = atom<VerificationAccountCreation | undefined>(
   undefined
 );
 
-export const joinMeetAtom = atom<JoinMeetingFormAccount | undefined>(undefined)
+export const joinMeetAtom = atom<JoinMeetingFormAccount | undefined>(undefined);
 
 export const emailAtom = atom<EmailAccountCreation | undefined>(undefined);
 
@@ -34,7 +39,9 @@ export const meetAtom = atom<MeetCreation | undefined>(undefined);
 
 export const fpIdAtom = atom(0);
 
-export const newCredentialsAtom = atom<NewCredentialsAccountCreation | undefined>(undefined)
+export const newCredentialsAtom = atom<
+  NewCredentialsAccountCreation | undefined
+>(undefined);
 
 export const categoryManagementAtom = atom<
   categoryManagementCreation | undefined
@@ -67,7 +74,20 @@ export const credentialAccountDetailsAtom = atom<
 export const accountCreationAtom = atom<AccountCreation | undefined>(undefined);
 
 export const accountLoginAtom = atom<loginAccount | undefined>(undefined);
-
+export const ClientCreationAtom = atom<ClientAccountCreation | undefined>(
+  undefined
+);
+export const accountClientCreationAtom = atom(
+  (get) => {
+    const accountClientCreation = get(ClientCreationAtom);
+    return {
+      accountClientCreation,
+    };
+  },
+  (_, set, { accountClientCreation }: AccountClientCreationFormData) => {
+    set(ClientCreationAtom, accountClientCreation);
+  }
+);
 export const accountAtom = atom(
   (get) => {
     const accountCreation = get(accountCreationAtom);
